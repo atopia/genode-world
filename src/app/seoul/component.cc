@@ -267,6 +267,8 @@ class Vcpu : public StaticReceiver<Vcpu>
 				}
 			}
 
+			/* Let base-hw know which exit we're resuming from. */
+			_state.last_exit.charge(exit);
 			/* resume */
 			_vm_vcpu.run();
 		}
