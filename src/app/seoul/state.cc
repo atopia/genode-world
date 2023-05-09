@@ -176,6 +176,40 @@ unsigned Seoul::read_vm_state(Genode::Vcpu_state &state, CpuState &seoul)
 {
 	unsigned mtr = 0;
 
+	/*
+	 * On base-hw, a pause exit ist just signaled without
+	 * charging any Vcpu_state. This enables the pause
+	 * signal to work asynchronously but to keep the contrib
+	 * code happy we need to charge a few fields here.
+	 */
+	if (state.exit_reason == 0xFF)
+	{
+		state.ax.set_charged();
+		state.bx.set_charged();
+		state.cx.set_charged();
+		state.dx.set_charged();
+
+		state.bp.set_charged();
+		state.di.set_charged();
+		state.si.set_charged();
+
+		state.flags.set_charged();
+
+		state.sp.set_charged();
+
+		state.ip.set_charged();
+		state.ip_len.set_charged();
+
+		state.qual_primary.set_charged();
+		state.qual_secondary.set_charged();
+
+		state.intr_state.set_charged();
+		state.actv_state.set_charged();
+
+		state.inj_info.set_charged();
+		state.inj_error.set_charged();
+	}
+
 	if (state.ax.charged() || state.cx.charged() ||
 	    state.dx.charged() || state.bx.charged()) {
 
@@ -409,5 +443,6 @@ unsigned Seoul::read_vm_state(Genode::Vcpu_state &state, CpuState &seoul)
 		Genode::warning("tpr not supported by Seoul");
 	}
 #endif
+
 	return mtr;
 }
