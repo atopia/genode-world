@@ -443,6 +443,5 @@ unsigned Seoul::read_vm_state(Genode::Vcpu_state &state, CpuState &seoul)
 		Genode::warning("tpr not supported by Seoul");
 	}
 #endif
-
 	return mtr;
 }

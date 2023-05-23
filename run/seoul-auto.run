@@ -45,8 +45,9 @@ set memory_vmm_vm     "512M"
 
 set vcpus_to_be_used  2
 
-if {[have_spec sel4]} {
+if {[have_spec sel4] || [have_spec hw]} {
 	# The seL4 kernel dies with an exception XXX
+	# SMP does not yet work on hw.
 	set vcpus_to_be_used  1
 }
 
